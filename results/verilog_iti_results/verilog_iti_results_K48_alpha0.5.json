@@ -1,0 +1,72 @@
+[
+  {
+    "problem_name": "zero",
+    "original_prompt": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - output zero\n\nThe module should always outputs a LOW.",
+    "original_implementation": "module RefModule (\n  output zero\n);\n\n  assign zero = 1'b0;\n\nendmodule",
+    "without_steering_implementation": "module TopModule(\n    output zero\n    assign zero = 1'b0;\nendmodule\nThis code defines a module named `TopModule` with an output port named `zero`. The `assign` statement is used to set the value of `zero` to `1'b0`, which represents a LOW signal in digital electronics. This ensures that the `zero` output will always be LOW, as required by the specification.",
+    "with_steering_implementation": ",ampieampieeczy\t Hinderedeczyentry"
+  },
+  {
+    "problem_name": "m2014_q4i",
+    "original_prompt": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - output out\n\nThe module should always drive 0 (or logic low).",
+    "original_implementation": "module RefModule (\n  output out\n);\n\n  assign out = 1'b0;\n\nendmodule",
+    "without_steering_implementation": "module TopModule (\n    output out\nassign out = 0;\nendmodule",
+    "with_steering_implementation": ". kreampieaniem"
+  },
+  {
+    "problem_name": "step_one",
+    "original_prompt": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - output one\n\nThe module should always drive 1 (or logic high).",
+    "original_implementation": "module RefModule (\n  output one\n);\n\n  assign one = 1'b1;\n\nendmodule",
+    "without_steering_implementation": "module TopModule (\n    output one\nassign one = 1;\nendmodule\nThis is a simple module that drives its single output port `one` to a logic high state (1). The `assign` statement is used to assign a value directly to the output without any procedural logic, making it suitable for constant values or straightforward assignments.",
+    "with_steering_implementation": ".usaha //ampiex///*ccidgeacci  \u81ea\u52a8\u751f\u6210is\u00e9, coraz dobr"
+  },
+  {
+    "problem_name": "vector2",
+    "original_prompt": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  in  (32 bits)\n - output out (32 bits)\n\nThe module should reverse the byte order of a 32-bit vector.",
+    "original_implementation": "module RefModule (\n  input [31:0] in,\n  output [31:0] out\n);\n\n  assign out = {in[7:0], in[15:8], in[23:16], in[31:24]};\n\nendmodule",
+    "without_steering_implementation": "module tb_TopModule;\n    reg [31:0] in;\n    wire [31:0] out;\n\n    TopModule uut (\n        .in(in),\n        .out(out)\n    );\n\n    initial begin\n        // Test case 1\n        in = 32'h1A2B3C4D;\n        #10; // Wait for 10 time units\n        $display(\"Test case 1: in = %h, out = %h\", in, out); // Expected out = 4D3C2B1A\n\n        // Test case 2\n        in = 32'hFEDCBA98;\n        #10; // Wait for 10 time units\n        $display(\"Test case 2: in = %h, out = %h\", in, out); // Expected out = 98BADCFE\n\n        // Test case 3\n        in = 32'h00000000;\n        #10; // Wait for 10 time units\n        $display(\"Test case 3: in = %h, out = %h\", in, out); // Expected out = 00000000\n\n        // Test case 4\n        in = 32'hFFFFFFFF;\n        #10; // Wait for 10 time units\n        $display(\"Test case 4: in = %h, out = %h\", in, out); // Expected out = FFFFFFFF\n\n        // Finish simulation\n        #10; // Wait for 10 time units\n        $finish;\n    end\nendmodule",
+    "with_steering_implementation": "x\u3001eczyampieacades"
+  },
+  {
+    "problem_name": "notgate",
+    "original_prompt": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  in\n - output out\n\nThe module should implement a NOT gate.",
+    "original_implementation": "module RefModule (\n  input in,\n  output out\n);\n\n  assign out = ~in;\n\nendmodule",
+    "without_steering_implementation": "module TopModule (\n    input  in,\n    output out\n    assign out = ~in;\nendmodule\nThis is the correct implementation of the NOT gate using the `assign` statement in SystemVerilog. The `assign` statement is used for continuous assignment, meaning that the value of `out` will always be updated whenever the value of `in` changes.",
+    "with_steering_implementation": "xampie \u751f\u547d\u5468\u671fodzi"
+  },
+  {
+    "problem_name": "vectorr",
+    "original_prompt": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  in  (8 bits)\n - output out (8 bits)\n\nThe module should reverse the bit ordering of the input port and write\nthe result to the output port.",
+    "original_implementation": "module RefModule (\n  input [7:0] in,\n  output [7:0] out\n);\n\n  assign {out[0],out[1],out[2],out[3],out[4],out[5],out[6],out[7]} = in;\n\nendmodule",
+    "without_steering_implementation": "module TopModule (\n    input [7:0] in,\n    output reg [7:0] out\nalways @(*) begin\nendmodule",
+    "with_steering_implementation": "#"
+  },
+  {
+    "problem_name": "wire",
+    "original_prompt": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  in\n - output out\n\nThe module should behave like a wire.",
+    "original_implementation": "module RefModule (\n  input in,\n  output out\n);\n\n  assign out = in;\n\nendmodule",
+    "without_steering_implementation": "module TopModule (\n    input  in,\n    output out\nassign out = in;\nendmodule\nThis code defines a module named `TopModule` with two ports: an input port `in` and an output port `out`. The behavior of the module is specified using the `assign` statement, which connects the output port `out` directly to the input port `in`. This means that whatever value is present on the input port `in` will be propagated to the output port `out`.\n- **module**: This keyword starts the definition of a new module.\n- **TopModule**: This is the name of the module.\n- **input in**: This declares an input port named `in`.\n- **output out**: This declares an output port named `out`.\n- **assign out = in;**: This line uses the `assign` statement to connect the output port `out` to the input port `in`. The `assign` statement ensures that the output port reflects the current value of the input port.\n- **endmodule**: This keyword marks the end of the module definition.\nThis simple implementation makes `TopModule` behave like a direct connection between its input and output, similar to a wire in hardware design.",
+    "with_steering_implementation": "/*\n\u3001/*\n /*\n /*ltarrivSqlParametercci"
+  },
+  {
+    "problem_name": "m2014_q4h",
+    "original_prompt": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  in\n - output out\n\nThe module should assign the output port to the same value as the input\nport combinationally.",
+    "original_implementation": "module RefModule (\n  input in,\n  output out\n);\n\n  assign out = in;\n\nendmodule",
+    "without_steering_implementation": "module TopModule (\n    input in,\n    output out\n);\nassign out = in;\nendmodule",
+    "with_steering_implementation": ".ampieampieaniem"
+  },
+  {
+    "problem_name": "popcount3",
+    "original_prompt": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  in  (3 bits)\n - output out (2 bits)\n\nThe module should implement a \"population count\" circuit that counts the\nnumber of '1's in the input vector.",
+    "original_implementation": "module RefModule (\n  input [2:0] in,\n  output [1:0] out\n);\n\n  assign out = in[0]+in[1]+in[2];\n\nendmodule",
+    "without_steering_implementation": "module tb_TopModule;\nreg [2:0] in;\nwire [1:0] out;\n\nTopModule uut (\n    .in(in),\n    .out(out)\n);\n\ninitial begin\n    // Test case 1\n    in = 3'b000;\n    #10;\n    assert (out == 2'b00) $display(\"Test case 1 passed\");\n    else $display(\"Test case 1 failed\");\n\n    // Test case 2\n    in = 3'b001;\n    #10;\n    assert (out == 2'b01) $display(\"Test case 2 passed\");\n    else $display(\"Test case 2 failed\");\n\n    // Test case 3\n    in = 3'b010;\n    #10;\n    assert (out == 2'b01) $display(\"Test case 3 passed\");\n    else $display(\"Test case 3 failed\");\n\n    // Test case 4\n    in = 3'b011;\n    #10;\n    assert (out == 2'b10) $display(\"Test case 4 passed\");\n    else $display(\"Test case 4 failed\");\n\n    // Test case 5\n    in = 3'b100;\n    #10;\n    assert (out == 2'b01) $display(\"Test case 5 passed\");\n    else $display(\"Test case 5 failed\");\n\n    // Test case 6\n    in = 3'b101;\n    #10;\n    assert (out == 2'b10) $display(\"Test case 6 passed\");\n    else $display(\"Test case 6 failed\");\n\n    // Test case 7\n    in = 3'b110;\n    #10;\n    assert (out == 2'b10) $display(\"Test case 7 passed\");\n    else $display(\"Test case 7 failed\");\n\n    // Test case 8\n    in = 3'b111;\n    #10;\n    assert (out == 2'b11) $display(\"Test case 8 passed\");\n    else $display(\"Test case 8 failed\");\n\n    $finish;\nend\nendmodule",
+    "with_steering_implementation": "\u3001ampieeczyampieodzi"
+  },
+  {
+    "problem_name": "mt2015_q4a",
+    "original_prompt": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  x\n - input  y\n - output z\n\nThe module should implement the boolean function z = (x^y) & x.",
+    "original_implementation": "module RefModule (\n  input x,\n  input y,\n  output z\n);\n\n  assign z = (x^y) & x;\n\nendmodule",
+    "without_steering_implementation": "module TopModule(\n    input x,\n    input y,\n    output reg z\nalways @(*) begin\nendmodule\nThis Verilog code defines a module named `TopModule` with two input ports `x` and `y`, and one output port `z`. The module implements the boolean function \\( z = (x \\oplus y) \\& x \\), where \\( \\oplus \\) denotes the XOR operation and \\( \\& \\) denotes the AND operation. The `always @(*)` block ensures that the value of `z` is updated whenever either `x` or `y` changes.",
+    "with_steering_implementation": "\u3001eczyampie darm g\u00f3ampieodzi"
+  }
+]

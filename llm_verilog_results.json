@@ -1,0 +1,352 @@
+[
+  {
+    "difficulty": "easy",
+    "generated_instruction": "\"Design a Verilog module for a 2-input AND gate with inputs a and b, and output y.\"",
+    "accurate_implementation": "module and_gate (\n    input a,\n    input b,\n    output y\n);\n    assign y = a & b;\nendmodule",
+    "slightly_different_implementation": "module AND2 (\n    input wire in1,\n    input wire in2,\n    output reg out\n);\n    always @* begin\n        out = in1 && in2;\n    end\nendmodule",
+    "buggy_implementation": "module and_gate (\n    input a,\n    input b,\n    output y\n);\n    assign y = a | b;\nendmodule"
+  },
+  {
+    "difficulty": "easy",
+    "generated_instruction": "\"Write a Verilog module for a 2-input OR gate with inputs 'a' and 'b' and output 'y'.\"",
+    "accurate_implementation": "module or_gate(input a, b, output y);\n    assign y = a | b;\nendmodule",
+    "slightly_different_implementation": "module or_gate(\n    input wire a,\n    input wire b,\n    output reg y\n);\n    always @(*) begin\n        y = a | b;\n    end\nendmodule",
+    "buggy_implementation": "module or_gate(input a, b, output y);\n    assign y = a & b;\nendmodule"
+  },
+  {
+    "difficulty": "easy",
+    "generated_instruction": "\"Design a Verilog module for a 2-input XOR gate with inputs `a` and `b` and output `y`.\"",
+    "accurate_implementation": "module xor_gate (\n    input a, b,\n    output y\n);\n    assign y = a ^ b;\nendmodule",
+    "slightly_different_implementation": "module xor_gate (\n    input a, b,\n    output y\n);\n    assign y = (a & ~b) | (~a & b);\nendmodule",
+    "buggy_implementation": "module xor_gate (\n    input a, b,\n    output y\n);\n    assign y = a | b;\nendmodule"
+  },
+  {
+    "difficulty": "easy",
+    "generated_instruction": "\"Write a Verilog module for a 2-to-1 multiplexer with inputs a, b, and sel, and output y that selects b when sel is high, otherwise a.\"",
+    "accurate_implementation": "module mux2to1 (\n    input a, b,\n    input sel,\n    output y\n);\n    assign y = sel ? b : a;\nendmodule",
+    "slightly_different_implementation": "module mux2to1 (\n    input a, b,\n    input sel,\n    output reg y\n);\n    always @(*) begin\n        case (sel)\n            1'b0: y = a;\n            1'b1: y = b;\n        endcase\n    end\nendmodule",
+    "buggy_implementation": "module mux2to1 (\n    input a, b,\n    input sel,\n    output y\n);\n    assign y = sel ? a : b;\nendmodule"
+  },
+  {
+    "difficulty": "easy",
+    "generated_instruction": "\"Write a Verilog module for a 1-bit full adder with inputs a, b, cin and outputs sum, cout. Use continuous assignments for the logic.\"",
+    "accurate_implementation": "module full_adder(\n    input a, b, cin,\n    output sum, cout\n);\n    assign sum = a ^ b ^ cin;\n    assign cout = (a & b) | (b & cin) | (cin & a);\nendmodule",
+    "slightly_different_implementation": "module full_adder(\n    input a, b, cin,\n    output reg sum, cout\n);\n    always @(*) begin\n        sum = a + b + cin;\n        cout = (a & b) | ((a ^ b) & cin);\n    end\nendmodule",
+    "buggy_implementation": "module full_adder(\n    input a, b, cin,\n    output sum, cout\n);\n    assign sum = a ^ b;\n    assign cout = (a & b) | (b & cin) | (cin & a);\nendmodule"
+  },
+  {
+    "difficulty": "easy",
+    "generated_instruction": "\"Write a Verilog module for a 1-bit half adder with inputs a and b, and outputs sum (XOR of inputs) and cout (AND of inputs).\"",
+    "accurate_implementation": "module half_adder(\n    input a, b,\n    output sum, cout\n);\n    assign sum = a ^ b;\n    assign cout = a & b;\nendmodule",
+    "slightly_different_implementation": "module half_adder(\n    input wire a, b,\n    output wire sum, cout\n);\n    xor(sum, a, b);\n    and(cout, a, b);\nendmodule",
+    "buggy_implementation": "module half_adder(\n    input a, b,\n    output sum, cout\n);\n    assign sum = a | b;\n    assign cout = a & b;\nendmodule"
+  },
+  {
+    "difficulty": "easy",
+    "generated_instruction": "\"Write a Verilog module for a D flip-flop with an asynchronous reset. The flip-flop should reset to 0 when the reset signal is high and store the input on the rising clock edge otherwise.\"",
+    "accurate_implementation": "module dff_async_reset (\n    input clk,\n    input rst,\n    input d,\n    output reg q\n);\n    always @(posedge clk or posedge rst) begin\n        if (rst)\n            q <= 1'b0;\n        else\n            q <= d;\n    end\nendmodule",
+    "slightly_different_implementation": "module dff_async_reset (\n    input wire clk, rst, d,\n    output reg q\n);\n    always @(posedge clk, posedge rst) begin\n        q <= rst ? 1'b0 : d;\n    end\nendmodule",
+    "buggy_implementation": "module dff_async_reset (\n    input clk,\n    input rst,\n    input d,\n    output reg q\n);\n    always @(posedge clk) begin\n        if (rst)\n            q <= 1'b0;\n        else\n            q <= d;\n    end\nendmodule"
+  },
+  {
+    "difficulty": "easy",
+    "generated_instruction": "\"Write a Verilog module for a T flip-flop with active-high reset and clock enable. The output toggles when the input 't' is high.\"",
+    "accurate_implementation": "module t_ff (\n    input clk, rst,\n    input t,\n    output reg q\n);\n    always @(posedge clk or posedge rst) begin\n        if (rst) q <= 1'b0;\n        else if (t) q <= ~q;\n    end\nendmodule",
+    "slightly_different_implementation": "module t_ff (\n    input clk, rst,\n    input t,\n    output reg q\n);\n    wire next_state = t ? ~q : q;\n    always @(posedge clk or posedge rst) begin\n        if (rst) q <= 1'b0;\n        else q <= next_state;\n    end\nendmodule",
+    "buggy_implementation": "module t_ff (\n    input clk, rst,\n    input t,\n    output reg q\n);\n    always @(posedge clk) begin\n        if (rst) q <= 1'b0;\n        else if (t) q <= ~q;\n    end\nendmodule"
+  },
+  {
+    "difficulty": "easy",
+    "generated_instruction": "\"Write a Verilog module for a 2-bit up-counter with clock and reset inputs. The counter should reset to 0 and increment on each clock edge.\"\n---\nThe generated instruction is concise, specifies the key requirements (2-bit, up-counter, clock/reset behavior), and avoids unnecessary details while ensuring accurate implementation. The two correct implementations differ in style (direct output reg vs. separate reg+assign), while the buggy version omits the reset from the sensitivity list.",
+    "accurate_implementation": "module counter_2bit (\n    input clk,\n    input reset,\n    output reg [1:0] count\n);\n    always @(posedge clk or posedge reset) begin\n        if (reset)\n            count <= 2'b00;\n        else\n            count <= count + 1;\n    end\nendmodule\n---",
+    "slightly_different_implementation": "module counter_2bit (\n    input clk,\n    input reset,\n    output [1:0] count\n);\n    reg [1:0] cnt_reg;\n    assign count = cnt_reg;\n    always @(posedge clk, posedge reset) begin\n        if (reset)\n            cnt_reg <= 0;\n        else\n            cnt_reg <= cnt_reg + 2'b01;\n    end\nendmodule\n---",
+    "buggy_implementation": "module counter_2bit (\n    input clk,\n    input reset,\n    output reg [1:0] count\n);\n    always @(posedge clk) begin\n        if (reset)\n            count <= 2'b00;\n        else\n            count <= count + 1;\n    end\nendmodule\n---"
+  },
+  {
+    "difficulty": "easy",
+    "generated_instruction": "\"Write a Verilog module for a 2-bit down counter with a clock and reset input. The counter should decrement on every clock edge and reset to 2'b11.\"",
+    "accurate_implementation": "module down_counter(\n    input clk,\n    input reset,\n    output reg [1:0] count\n);\nalways @(posedge clk or posedge reset) begin\n    if (reset)\n        count <= 2'b11;\n    else\n        count <= count - 1;\nend\nendmodule\n---",
+    "slightly_different_implementation": "module down_counter(\n    input clk,\n    input reset,\n    output [1:0] count\n);\nreg [1:0] cnt_reg;\nassign count = cnt_reg;\nalways @(posedge clk) begin\n    if (reset)\n        cnt_reg <= 2'b11;\n    else if (cnt_reg == 2'b00)\n        cnt_reg <= 2'b11;\n    else\n        cnt_reg <= cnt_reg - 1;\nend\nendmodule\n---",
+    "buggy_implementation": "module down_counter(\n    input clk,\n    input reset,\n    output reg [1:0] count\n);\nalways @(posedge clk) begin\n    if (reset)\n        count <= 2'b11;\n    else\n        count <= count + 1;\nend\nendmodule\n---"
+  },
+  {
+    "difficulty": "easy",
+    "generated_instruction": "\"Design a 4-to-1 multiplexer using a case statement.\"",
+    "accurate_implementation": "module mux_4to1 (\n    input [3:0] data_in,\n    input [1:0] sel,\n    output reg out\n);\n    always @(*) begin\n        case (sel)\n            2'b00: out = data_in[0];\n            2'b01: out = data_in[1];\n            2'b10: out = data_in[2];\n            2'b11: out = data_in[3];\n            default: out = 1'b0;\n        endcase\n    end\nendmodule",
+    "slightly_different_implementation": "module mux_4to1 (\n    input [3:0] data_in,\n    input [1:0] sel,\n    output wire out\n);\n    assign out = (sel == 2'b00) ? data_in[0] :\n                 (sel == 2'b01) ? data_in[1] :\n                 (sel == 2'b10) ? data_in[2] :\n                                  data_in[3];\nendmodule",
+    "buggy_implementation": "module mux_4to1 (\n    input [3:0] data_in,\n    input [1:0] sel,\n    output reg out\n);\n    always @(*) begin\n        case (sel)\n            2'b00: out = data_in[1];\n            2'b01: out = data_in[1];\n            2'b10: out = data_in[2];\n            2'b11: out = data_in[3];\n        endcase\n    end\nendmodule"
+  },
+  {
+    "difficulty": "easy",
+    "generated_instruction": "\"Write a Verilog module for a 2-to-4 decoder that takes a 2-bit input and activates one of four outputs based on the input value. Use a case statement.\"",
+    "accurate_implementation": "module decoder_2to4 (\n    input [1:0] in,\n    output reg [3:0] out\n);\nalways @(*) begin\n    case(in)\n        2'b00: out = 4'b0001;\n        2'b01: out = 4'b0010;\n        2'b10: out = 4'b0100;\n        2'b11: out = 4'b1000;\n    endcase\nend\nendmodule",
+    "slightly_different_implementation": "module decoder_2to4 (\n    input [1:0] in,\n    output [3:0] out\n);\nassign out = (in == 2'b00) ? 4'b0001 :\n             (in == 2'b01) ? 4'b0010 :\n             (in == 2'b10) ? 4'b0100 :\n             4'b1000;\nendmodule",
+    "buggy_implementation": "module decoder_2to4 (\n    input [1:0] in,\n    output reg [3:0] out\n);\nalways @(*) begin\n    case(in)\n        2'b00: out = 4'b0001;\n        2'b01: out = 4'b0010;\n        2'b10: out = 4'b0100;\n    endcase\nend\nendmodule\n---"
+  },
+  {
+    "difficulty": "easy",
+    "generated_instruction": "\"Write a Verilog module for a 4-bit register with synchronous reset. The reset should clear the output to zero on the rising clock edge.\"",
+    "accurate_implementation": "module register_4bit (\n    input clk,\n    input rst,\n    input [3:0] d,\n    output reg [3:0] q\n);\nalways @(posedge clk) begin\n    if (rst) q <= 4'b0;\n    else q <= d;\nend\nendmodule\n###",
+    "slightly_different_implementation": "module register_4bit (\n    input wire clk,\n    input wire rst,\n    input wire [3:0] d,\n    output reg [3:0] q\n);\nalways @(posedge clk or posedge rst) begin\n    if (rst) q <= 4'b0;\n    else q <= d;\nend\nendmodule\n###",
+    "buggy_implementation": "module register_4bit (\n    input clk,\n    input rst,\n    input [3:0] d,\n    output reg [3:0] q\n);\nalways @(posedge clk) begin\n    if (!rst) q <= d;\nend\nendmodule\n###"
+  },
+  {
+    "difficulty": "easy",
+    "generated_instruction": "\"Write a Verilog module for a 4-bit register with clock and enable inputs. The register should store the input data on the rising clock edge when enabled.\"",
+    "accurate_implementation": "module register_4bit (\n    input wire clk,\n    input wire en,\n    input wire [3:0] d,\n    output reg [3:0] q\n);\n    always @(posedge clk) begin\n        if (en) q <= d;\n    end\nendmodule",
+    "slightly_different_implementation": "module register_4bit (\n    input wire clk,\n    input wire enable,\n    input wire [3:0] data_in,\n    output reg [3:0] data_out\n);\n    always @(posedge clk) begin\n        data_out <= enable ? data_in : data_out;\n    end\nendmodule",
+    "buggy_implementation": "module register_4bit (\n    input wire clk,\n    input wire en,\n    input wire [3:0] d,\n    output reg [3:0] q\n);\n    always @(posedge clk) begin\n        if (en) q = d;\n    end\nendmodule"
+  },
+  {
+    "difficulty": "easy",
+    "generated_instruction": "Write a Verilog module for a 4-bit adder with inputs a, b, cin and outputs sum, cout. Use a single line to compute the sum and carry.",
+    "accurate_implementation": "module adder_4bit (\n    input [3:0] a, b,\n    input cin,\n    output [3:0] sum,\n    output cout\n);\n    assign {cout, sum} = a + b + cin;\nendmodule",
+    "slightly_different_implementation": "module adder_4bit (\n    input [3:0] a, b,\n    input cin,\n    output [3:0] sum,\n    output cout\n);\n    wire [4:0] result;\n    assign result = a + b + cin;\n    assign sum = result[3:0];\n    assign cout = result[4];\nendmodule",
+    "buggy_implementation": "module adder_4bit (\n    input [3:0] a, b,\n    input cin,\n    output [3:0] sum,\n    output cout\n);\n    assign {cout, sum} = a + b;\nendmodule"
+  },
+  {
+    "difficulty": "easy",
+    "generated_instruction": "\"Write a Verilog module for a 4-bit subtractor with inputs a and b, outputs diff and borrow.\"",
+    "accurate_implementation": "module subtractor_4bit (\n    input [3:0] a,\n    input [3:0] b,\n    output [3:0] diff,\n    output borrow\n);\n    assign {borrow, diff} = a - b;\nendmodule",
+    "slightly_different_implementation": "module subtractor_4bit (\n    input [3:0] a,\n    input [3:0] b,\n    output [3:0] diff,\n    output borrow\n);\n    wire [4:0] result;\n    assign result = {1'b0, a} - {1'b0, b};\n    assign diff = result[3:0];\n    assign borrow = result[4];\nendmodule",
+    "buggy_implementation": "module subtractor_4bit (\n    input [3:0] a,\n    input [3:0] b,\n    output [3:0] diff\n);\n    assign diff = a - b;\nendmodule"
+  },
+  {
+    "difficulty": "easy",
+    "generated_instruction": "\"Write a Verilog module for a 2-input NAND gate with inputs a and b, and output y.\"",
+    "accurate_implementation": "module nand_gate (\n    input a, b,\n    output y\n);\n    assign y = ~(a & b);\nendmodule",
+    "slightly_different_implementation": "module nand_gate (\n    input wire a, b,\n    output reg y\n);\n    always @(*) begin\n        y = ~(a & b);\n    end\nendmodule",
+    "buggy_implementation": "module nand_gate (\n    input a, b,\n    output y\n);\n    assign y = ~a & b;\nendmodule"
+  },
+  {
+    "difficulty": "easy",
+    "generated_instruction": "\"Implement a 2-input NOR gate in Verilog.\"",
+    "accurate_implementation": "module nor_gate (\n    input a,\n    input b,\n    output y\n);\n    assign y = ~(a | b);\nendmodule",
+    "slightly_different_implementation": "module nor_gate (\n    input wire a, b,\n    output wire y\n);\n    wire or_out;\n    assign or_out = a | b;\n    assign y = ~or_out;\nendmodule",
+    "buggy_implementation": "module nor_gate (\n    input a,\n    input b,\n    output y\n);\n    assign y = ~a | ~b;\nendmodule"
+  },
+  {
+    "difficulty": "easy",
+    "generated_instruction": "\"Write a Verilog module for a 2-input XNOR gate.\"",
+    "accurate_implementation": "module xnor_gate(\n    input a, b,\n    output y\n);\n    assign y = ~(a ^ b);\nendmodule",
+    "slightly_different_implementation": "module xnor_gate(\n    input a, b,\n    output y\n);\n    assign y = (a & b) | (~a & ~b);\nendmodule",
+    "buggy_implementation": "module xnor_gate(\n    input a, b,\n    output y\n);\n    assign y = a ^ b;\nendmodule"
+  },
+  {
+    "difficulty": "easy",
+    "generated_instruction": "\"Design a 4-bit comparator in Verilog that outputs 1 when input A is greater than input B.\"",
+    "accurate_implementation": "module comparator_4bit (\n    input [3:0] A,\n    input [3:0] B,\n    output reg A_gt_B\n);\n    always @(*) begin\n        A_gt_B = (A > B);\n    end\nendmodule",
+    "slightly_different_implementation": "module comparator_4bit (\n    input [3:0] A,\n    input [3:0] B,\n    output A_gt_B\n);\n    assign A_gt_B = (A[3] > B[3]) |\n                   ((A[3] == B[3]) && (A[2] > B[2])) |\n                   ((A[3:2] == B[3:2]) && (A[1] > B[1])) |\n                   ((A[3:1] == B[3:1]) && (A[0] > B[0]));\nendmodule",
+    "buggy_implementation": "module comparator_4bit (\n    input [3:0] A,\n    input [3:0] B,\n    output reg A_gt_B\n);\n    always @(*) begin\n        A_gt_B = (A >= B);\n    end\nendmodule"
+  },
+  {
+    "difficulty": "easy",
+    "generated_instruction": "\"Write a Verilog module for a 2-to-1 demultiplexer with inputs 'data' and 'sel', and outputs 'out0' and 'out1'. When sel=0, route data to out0. When sel=1, route data to out1.\"",
+    "accurate_implementation": "module demux_2to1 (\n    input data,\n    input sel,\n    output reg out0,\n    output reg out1\n);\n    always @(*) begin\n        out0 = (sel == 0) ? data : 0;\n        out1 = (sel == 1) ? data : 0;\n    end\nendmodule",
+    "slightly_different_implementation": "module demux_2to1 (\n    input data,\n    input sel,\n    output out0,\n    output out1\n);\n    assign out0 = ~sel & data;\n    assign out1 = sel & data;\nendmodule",
+    "buggy_implementation": "module demux_2to1 (\n    input data,\n    input sel,\n    output reg out0,\n    output reg out1\n);\n    always @(*) begin\n        out0 = (sel == 0) ? data : 1;\n        out1 = (sel == 1) ? data : 0;\n    end\nendmodule"
+  },
+  {
+    "difficulty": "easy",
+    "generated_instruction": "\"Write a Verilog module for a 4-to-2 encoder using a case statement. The output should be 00 for input 0001, 01 for 0010, 10 for 0100, and 11 for 1000, with a default output of 00.\"",
+    "accurate_implementation": "module encoder_4to2 (\n    input [3:0] in,\n    output reg [1:0] out\n);\nalways @(*) begin\n    case (in)\n        4'b0001: out = 2'b00;\n        4'b0010: out = 2'b01;\n        4'b0100: out = 2'b10;\n        4'b1000: out = 2'b11;\n        default: out = 2'b00;\n    endcase\nend\nendmodule",
+    "slightly_different_implementation": "module encoder_4to2 (\n    input [3:0] in,\n    output [1:0] out\n);\nassign out = (in[0]) ? 2'b00 :\n             (in[1]) ? 2'b01 :\n             (in[2]) ? 2'b10 :\n             (in[3]) ? 2'b11 : 2'b00;\nendmodule",
+    "buggy_implementation": "module encoder_4to2 (\n    input [3:0] in,\n    output reg [1:0] out\n);\nalways @(*) begin\n    case (in)\n        4'b0001: out = 2'b00;\n        4'b0010: out = 2'b01;\n        4'b0100: out = 2'b10;\n        4'b1000: out = 2'b11;\n    endcase\nend\nendmodule"
+  },
+  {
+    "difficulty": "easy",
+    "generated_instruction": "\"Design a 2-bit magnitude comparator with 'eq', 'lt', and 'gt' outputs.\"",
+    "accurate_implementation": "module mag_compare_2bit(\n    input [1:0] a,\n    input [1:0] b,\n    output eq,\n    output lt,\n    output gt\n);\n    assign eq = (a == b);\n    assign lt = (a < b);\n    assign gt = (a > b);\nendmodule",
+    "slightly_different_implementation": "module mag_compare_2bit(\n    input [1:0] a,\n    input [1:0] b,\n    output reg eq,\n    output reg lt,\n    output reg gt\n);\n    always @(*) begin\n        eq = (a == b);\n        lt = (a < b);\n        gt = (a > b);\n    end\nendmodule",
+    "buggy_implementation": "module mag_compare_2bit(\n    input [1:0] a,\n    input [1:0] b,\n    output eq,\n    output lt,\n    output gt\n);\n    assign eq = (a[0] == b[0]) & (a[1] == b[1]);\n    assign lt = (a < b);\n    assign gt = (a > b);\nendmodule"
+  },
+  {
+    "difficulty": "easy",
+    "generated_instruction": "\"Write a Verilog module for a 2-bit up/down counter with clock, reset, and mode input (1=up, 0=down). Reset asynchronously sets count to 0.\"\n---\nThe generated instruction is minimal, clear, and sufficient for an LLM to reproduce the accurate implementation.",
+    "accurate_implementation": "module up_down_counter(\n    input clk, rst, mode,\n    output reg [1:0] count\n);\nalways @(posedge clk or posedge rst) begin\n    if (rst)\n        count <= 2'b00;\n    else if (mode)\n        count <= count + 1;\n    else\n        count <= count - 1;\nend\nendmodule",
+    "slightly_different_implementation": "module up_down_counter(\n    input clk, rst, up_not_down,\n    output reg [1:0] out\n);\nalways @(posedge clk) begin\n    if (rst)\n        out <= 0;\n    else\n        out <= up_not_down ? out + 1 : out - 1;\nend\nendmodule",
+    "buggy_implementation": "module up_down_counter(\n    input clk, rst, mode,\n    output reg [1:0] count\n);\nalways @(posedge clk) begin\n    if (rst) count <= 2'b00;\n    if (mode) count <= count + 1;\n    else count <= count - 1;\nend\nendmodule"
+  },
+  {
+    "difficulty": "easy",
+    "generated_instruction": "\"Write a Verilog module for a 2-bit shift register with clock, reset, and data input, that shifts bits from input to output on clock edges.\"",
+    "accurate_implementation": "module shift_reg_2bit (\n    input clk,\n    input reset,\n    input din,\n    output reg [1:0] dout\n);\nalways @(posedge clk or posedge reset) begin\n    if (reset)\n        dout <= 2'b00;\n    else\n        dout <= {dout[0], din};\nend\nendmodule",
+    "slightly_different_implementation": "module shift_reg_2bit (\n    input clk,\n    input rst,\n    input data_in,\n    output [1:0] data_out\n);\nreg [1:0] reg_data;\nassign data_out = reg_data;\nalways @(posedge clk) begin\n    if (rst)\n        reg_data <= 2'b0;\n    else\n        reg_data <= {reg_data[0], data_in};\nend\nendmodule",
+    "buggy_implementation": "module shift_reg_2bit (\n    input clk,\n    input reset,\n    input din,\n    output reg [1:0] dout\n);\nalways @(posedge clk) begin\n    if (reset)\n        dout = 2'b00;\n    else\n        dout <= {din, dout[0]};\nend\nendmodule"
+  },
+  {
+    "difficulty": "easy",
+    "generated_instruction": "\"Design a 2-bit ring counter that cycles through 2-bit patterns. Include clock and reset inputs. Initialize to '01' on reset.\"",
+    "accurate_implementation": "module ring_counter (\n    input clk,\n    input rst,\n    output reg [1:0] out\n);\n    always @(posedge clk or posedge rst) begin\n        if (rst) out <= 2'b01;\n        else out <= {out[0], out[1]};\n    end\nendmodule",
+    "slightly_different_implementation": "module ring_counter (\n    input clk,\n    input rst,\n    output reg [1:0] out\n);\n    always @(posedge clk) begin\n        if (rst) out <= 2'b10;\n        else out <= out << 1;\n    end\nendmodule",
+    "buggy_implementation": "module ring_counter (\n    input clk,\n    input rst,\n    output reg [1:0] out\n);\n    always @(posedge clk) begin\n        if (rst) out <= 2'b01;\n        else out <= {out[0]};\n    end\nendmodule"
+  },
+  {
+    "difficulty": "easy",
+    "generated_instruction": "\"Write a Verilog module for a 2-bit Johnson counter with a clock and reset. The counter should cycle through the states 00, 10, 11, 01.\"",
+    "accurate_implementation": "module johnson_counter (\n    input clk, rst,\n    output reg [1:0] out\n);\n    always @(posedge clk or posedge rst) begin\n        if (rst)\n            out <= 2'b00;\n        else\n            out <= {~out[0], out[1]};\n    end\nendmodule",
+    "slightly_different_implementation": "module johnson_counter (\n    input clk, rst,\n    output reg [1:0] count = 2'b00\n);\n    always @(posedge clk) begin\n        if (rst)\n            count <= 2'b00;\n        else\n            count <= {count[0], ~count[1]};\n    end\nendmodule",
+    "buggy_implementation": "module johnson_counter (\n    input clk, rst,\n    output reg [1:0] out\n);\n    always @(posedge clk) begin\n        if (rst)\n            out <= 2'b00;\n        else\n            out <= {out[0], out[1]};\n    end\nendmodule"
+  },
+  {
+    "difficulty": "easy",
+    "generated_instruction": "*\"Design a Verilog module for a 2-bit parity generator. The output should be the XOR of the two input bits.\"*",
+    "accurate_implementation": "module parity_gen_2bit (\n    input [1:0] data,\n    output parity\n);\n    assign parity = data[0] ^ data[1];\nendmodule",
+    "slightly_different_implementation": "module parity_gen_2bit (\n    input [1:0] data,\n    output reg parity\n);\n    always @(*) begin\n        parity = data[0] ^ data[1];\n    end\nendmodule",
+    "buggy_implementation": "module parity_gen_2bit (\n    input [1:0] data,\n    output parity\n);\n    assign parity = ~(data[0] & data[1]);\nendmodule\n---"
+  },
+  {
+    "difficulty": "easy",
+    "generated_instruction": "\"Write a Verilog module for a 2-bit parity checker that outputs the XOR of the two input bits.\"\n---\nThe generated instruction is concise and unambiguous, ensuring the LLM produces the correct implementation (like the first one). The other implementations are included for comparison. The buggy version incorrectly uses an AND operation instead of XOR.",
+    "accurate_implementation": "module parity_checker(\n    input [1:0] data,\n    output parity\n);\n    assign parity = ^data;\nendmodule",
+    "slightly_different_implementation": "module parity_checker(\n    input [1:0] data,\n    output reg parity\n);\n    always @(*) begin\n        parity = data[0] ^ data[1];\n    end\nendmodule",
+    "buggy_implementation": "module parity_checker(\n    input [1:0] data,\n    output parity\n);\n    assign parity = data[0] & data[1];\nendmodule"
+  },
+  {
+    "difficulty": "easy",
+    "generated_instruction": "\"Design a Verilog module for a 2-bit incrementer that takes a 2-bit input and outputs the input plus one.\"",
+    "accurate_implementation": "module incrementer_2bit (\n    input [1:0] a,\n    output reg [1:0] b\n);\n    always @(*) begin\n        b = a + 1'b1;\n    end\nendmodule",
+    "slightly_different_implementation": "module incrementer_2bit (\n    input [1:0] a,\n    output [1:0] b\n);\n    assign b = (a == 2'b11) ? 2'b00 : a + 1;\nendmodule",
+    "buggy_implementation": "module incrementer_2bit (\n    input [1:0] a,\n    output [1:0] b\n);\n    always @(*) begin\n        b = a + 1'b0;\n    end\nendmodule"
+  },
+  {
+    "difficulty": "medium",
+    "generated_instruction": "\"Write a Verilog module for an 8-to-1 multiplexer with 8 data inputs, 3-bit select input, and 1 output. Use a case statement inside an always block.\"",
+    "accurate_implementation": "module mux_8to1 (\n    input [7:0] data,\n    input [2:0] sel,\n    output reg out\n);\n    always @(*) begin\n        case (sel)\n            3'b000: out = data[0];\n            3'b001: out = data[1];\n            3'b010: out = data[2];\n            3'b011: out = data[3];\n            3'b100: out = data[4];\n            3'b101: out = data[5];\n            3'b110: out = data[6];\n            3'b111: out = data[7];\n        endcase\n    end\nendmodule",
+    "slightly_different_implementation": "module mux_8to1 (\n    input [7:0] data,\n    input [2:0] sel,\n    output out\n);\n    assign out = data[sel];\nendmodule",
+    "buggy_implementation": "module mux_8to1 (\n    input [7:0] data,\n    input [2:0] sel,\n    output reg out\n);\n    always @(*) begin\n        case (sel)\n            3'b000: out = data[0];\n            3'b001: out = data[1];\n            3'b010: out = data[2];\n            3'b011: out = data[3];\n            3'b100: out = data[4];\n            3'b101: out = data[5];\n            3'b110: out = data[6];\n        endcase\n    end\nendmodule"
+  },
+  {
+    "difficulty": "medium",
+    "generated_instruction": "\"Write a Verilog module for a 3-to-8 decoder using a case statement to map each 3-bit input to an 8-bit output with one-hot encoding.\"",
+    "accurate_implementation": "module decoder_3to8 (\n    input [2:0] in,\n    output reg [7:0] out\n);\nalways @(*) begin\n    case (in)\n        3'b000: out = 8'b00000001;\n        3'b001: out = 8'b00000010;\n        3'b010: out = 8'b00000100;\n        3'b011: out = 8'b00001000;\n        3'b100: out = 8'b00010000;\n        3'b101: out = 8'b00100000;\n        3'b110: out = 8'b01000000;\n        3'b111: out = 8'b10000000;\n        default: out = 8'b00000000;\n    endcase\nend\nendmodule\n---",
+    "slightly_different_implementation": "module decoder_3to8 (\n    input [2:0] in,\n    output [7:0] out\n);\nassign out = (1 << in);\nendmodule\n---",
+    "buggy_implementation": "module decoder_3to8 (\n    input [2:0] in,\n    output reg [7:0] out\n);\nalways @(*) begin\n    case (in)\n        3'b000: out = 8'b00000001;\n        3'b001: out = 8'b00000010;\n        3'b010: out = 8'b00000100;\n        3'b011: out = 8'b00001000;\n        3'b100: out = 8'b00010000;\n        3'b101: out = 8'b00100000;\n        3'b110: out = 8'b01000000;\n        default: out = 8'b00000000;\n    endcase\nend\nendmodule\n---"
+  },
+  {
+    "difficulty": "medium",
+    "generated_instruction": "\"Design a 4-bit up/down counter in Verilog with clock, reset, and up/down control inputs.\"",
+    "accurate_implementation": "module up_down_counter(\n  input clk, rst, up,\n  output reg [3:0] count\n);\nalways @(posedge clk or posedge rst) begin\n  if (rst)\n    count <= 4'b0;\n  else if (up)\n    count <= count + 1;\n  else\n    count <= count - 1;\nend\nendmodule",
+    "slightly_different_implementation": "module up_down_counter(\n  input clk, rst, up,\n  output reg [3:0] count\n);\nalways @(posedge clk) begin\n  if (rst)\n    count <= 0;\n  else begin\n    case(up)\n      1'b1: count <= count + 1'b1;\n      1'b0: count <= count - 1'b1;\n    endcase\n  end\nend\nendmodule",
+    "buggy_implementation": "module up_down_counter(\n  input clk, rst, up,\n  output reg [3:0] count\n);\nalways @(posedge clk) begin\n  if (rst)\n    count <= 4'b0;\n  else if (up)\n    count <= count + 1;\nend\nendmodule"
+  },
+  {
+    "difficulty": "medium",
+    "generated_instruction": "\"Write a Verilog module for a 4-bit even parity generator that takes a 4-bit input and outputs the parity bit.\"",
+    "accurate_implementation": "module parity_gen (\n    input [3:0] data,\n    output parity\n);\n    assign parity = ^data;\nendmodule",
+    "slightly_different_implementation": "module parity_gen (\n    input [3:0] data,\n    output reg parity\n);\n    always @(*) begin\n        parity = data[0] ^ data[1] ^ data[2] ^ data[3];\n    end\nendmodule",
+    "buggy_implementation": "module parity_gen (\n    input [3:0] data,\n    output parity\n);\n    assign parity = data[0] ^ data[1] ^ data[2];\nendmodule"
+  },
+  {
+    "difficulty": "medium",
+    "generated_instruction": "\"Design a Verilog module for a 4-bit odd parity checker. The module should have a 4-bit input and output 1 if there's an odd number of 1s in the input.\"",
+    "accurate_implementation": "module parity_checker (\n    input [3:0] data,\n    output odd_parity\n);\n    assign odd_parity = ^data;\nendmodule",
+    "slightly_different_implementation": "module parity_checker (\n    input [3:0] data,\n    output reg odd_parity\n);\n    always @(*) begin\n        odd_parity = data[0] ^ data[1] ^ data[2] ^ data[3];\n    end\nendmodule",
+    "buggy_implementation": "module parity_checker (\n    input [3:0] data,\n    output odd_parity\n);\n    assign odd_parity = ~^data;\nendmodule"
+  },
+  {
+    "difficulty": "medium",
+    "generated_instruction": "\"Design a 4-bit magnitude comparator with outputs for A > B, A == B, and A < B using continuous assignments in Verilog.\"",
+    "accurate_implementation": "module magnitude_comparator(\n    input [3:0] A, B,\n    output A_gt_B, A_eq_B, A_lt_B\n);\n    assign A_gt_B = (A > B);\n    assign A_eq_B = (A == B);\n    assign A_lt_B = (A < B);\nendmodule",
+    "slightly_different_implementation": "module magnitude_comparator(\n    input [3:0] A, B,\n    output reg [2:0] result\n);\n    always @(*) begin\n        if (A > B) result = 3'b100;\n        else if (A == B) result = 3'b010;\n        else result = 3'b001;\n    end\nendmodule",
+    "buggy_implementation": "module magnitude_comparator(\n    input [3:0] A, B,\n    output A_gt_B, A_eq_B, A_lt_B\n);\n    assign A_gt_B = (A >= B);\n    assign A_eq_B = (A == B);\n    assign A_lt_B = (A <= B);\nendmodule"
+  },
+  {
+    "difficulty": "medium",
+    "generated_instruction": "\"Write a Verilog module that converts 4-bit binary input to Gray code using XOR operations between adjacent bits, with the MSB remaining unchanged.\"",
+    "accurate_implementation": "module bin_to_gray(\n    input [3:0] bin,\n    output [3:0] gray\n);\n    assign gray[3] = bin[3];\n    assign gray[2] = bin[3] ^ bin[2];\n    assign gray[1] = bin[2] ^ bin[1];\n    assign gray[0] = bin[1] ^ bin[0];\nendmodule",
+    "slightly_different_implementation": "module bin_to_gray(\n    input [3:0] bin,\n    output [3:0] gray\n);\n    always @(*) begin\n        gray[3] = bin[3];\n        gray[2] = bin[3] ^ bin[2];\n        gray[1] = bin[2] ^ bin[1];\n        gray[0] = bin[1] ^ bin[0];\n    end\nendmodule",
+    "buggy_implementation": "module bin_to_gray(\n    input [3:0] bin,\n    output [3:0] gray\n);\n    assign gray[3] = bin[3];\n    assign gray[2] = bin[2] ^ bin[1];\n    assign gray[1] = bin[1] ^ bin[0];\n    assign gray[0] = bin[0];\nendmodule"
+  },
+  {
+    "difficulty": "medium",
+    "generated_instruction": "Design a 4-bit Gray code to binary converter using XOR operations, where each binary bit is computed as the XOR of all higher-order Gray bits.",
+    "accurate_implementation": "module gray_to_binary (\n    input [3:0] gray,\n    output [3:0] binary\n);\n    assign binary[3] = gray[3];\n    assign binary[2] = gray[3] ^ gray[2];\n    assign binary[1] = gray[3] ^ gray[2] ^ gray[1];\n    assign binary[0] = gray[3] ^ gray[2] ^ gray[1] ^ gray[0];\nendmodule\n###",
+    "slightly_different_implementation": "module gray_to_binary (\n    input [3:0] gray,\n    output [3:0] binary\n);\n    assign binary = {\n        gray[3],\n        gray[3] ^ gray[2],\n        gray[3] ^ gray[2] ^ gray[1],\n        gray[3] ^ gray[2] ^ gray[1] ^ gray[0]\n    };\nendmodule\n###",
+    "buggy_implementation": "module gray_to_binary (\n    input [3:0] gray,\n    output [3:0] binary\n);\n    assign binary[3] = gray[3];\n    assign binary[2] = gray[3] & gray[2];\n    assign binary[1] = gray[3] ^ gray[2] ^ gray[1];\n    assign binary[0] = gray[3] ^ gray[2] ^ gray[1] ^ gray[0];\nendmodule\n###"
+  },
+  {
+    "difficulty": "medium",
+    "generated_instruction": "\"Write a Verilog module for a 4-bit ring counter with async reset that initializes to 0001 and rotates left on each clock cycle.\"",
+    "accurate_implementation": "module ring_counter(\n    input clk,\n    input rst,\n    output reg [3:0] count\n);\nalways @(posedge clk or posedge rst) begin\n    if (rst) begin\n        count <= 4'b0001;\n    end else begin\n        count <= {count[2:0], count[3]};\n    end\nend\nendmodule",
+    "slightly_different_implementation": "module ring_counter(\n    input clk,\n    input reset,\n    output reg [3:0] out\n);\nalways @(posedge clk) begin\n    if (reset)\n        out <= 1;\n    else\n        out <= (out << 1) | (out >> 3);\nend\nendmodule",
+    "buggy_implementation": "module ring_counter(\n    input clk,\n    input rst,\n    output reg [3:0] count\n);\nalways @(posedge clk) begin\n    if (rst) begin\n        count <= 4'b1000;\n    end else begin\n        count <= count << 1;\n    end\nend\nendmodule"
+  },
+  {
+    "difficulty": "medium",
+    "generated_instruction": "\"Write a Verilog module for a 4-bit Johnson counter with asynchronous reset.\"",
+    "accurate_implementation": "module johnson_counter (\n    input clk,\n    input rst,\n    output reg [3:0] count\n);\n    always @(posedge clk or posedge rst) begin\n        if (rst) begin\n            count <= 4'b0000;\n        end else begin\n            count <= {~count[0], count[3:1]};\n        end\n    end\nendmodule",
+    "slightly_different_implementation": "module johnson_counter (\n    input clk,\n    input rst,\n    output reg [3:0] count\n);\n    always @(posedge clk) begin\n        if (rst) begin\n            count <= 4'b0000;\n        end else begin\n            count <= {count[2:0], ~count[3]};\n        end\n    end\nendmodule",
+    "buggy_implementation": "module johnson_counter (\n    input clk,\n    input rst,\n    output reg [3:0] count\n);\n    always @(posedge clk) begin\n        if (rst) begin\n            count <= 4'b0000;\n        end else begin\n            count <= {count[2:0], count[3]};\n        end\n    end\nendmodule"
+  },
+  {
+    "difficulty": "medium",
+    "generated_instruction": "\"Design a 4-bit right shift register with clock, reset, and load control. It should load parallel data when load is high, shift right otherwise, and reset synchronously.\"",
+    "accurate_implementation": "module shift_register (\n  input clk,\n  input rst,\n  input load,\n  input [3:0] data_in,\n  output reg [3:0] data_out\n);\nalways @(posedge clk or posedge rst) begin\n  if (rst) begin\n    data_out <= 4'b0;\n  end else if (load) begin\n    data_out <= data_in;\n  end else begin\n    data_out <= {1'b0, data_out[3:1]};\n  end\nend\nendmodule",
+    "slightly_different_implementation": "module shift_register (\n  input clk,\n  input rst,\n  input load,\n  input [3:0] data_in,\n  output reg [3:0] data_out\n);\nalways @(posedge clk) begin\n  if (rst)\n    data_out <= 4'b0;\n  else if (load)\n    data_out <= data_in;\nend\nalways @(posedge clk) begin\n  if (~rst && ~load)\n    data_out <= {1'b0, data_out[3:1]};\nend\nendmodule",
+    "buggy_implementation": "module shift_register (\n  input clk,\n  input rst,\n  input load,\n  input [3:0] data_in,\n  output reg [3:0] data_out\n);\nalways @(posedge clk or posedge rst) begin\n  if (rst) begin\n    data_out <= 4'b0;\n  end else begin\n    data_out <= {1'b0, data_out[3:1]};\n  end\nend\nendmodule"
+  },
+  {
+    "difficulty": "medium",
+    "generated_instruction": "Design a 4-bit left shift register with clock and reset inputs, and serial input. It should shift bits to the left by one on each clock cycle, discarding the MSB and inserting the serial input in the LSB position.",
+    "accurate_implementation": "module shift_register (\n    input clk,\n    input reset,\n    input data_in,\n    output reg [3:0] data_out\n);\n    always @(posedge clk or posedge reset) begin\n        if (reset) begin\n            data_out <= 4'b0;\n        end else begin\n            data_out <= {data_out[2:0], data_in};\n        end\n    end\nendmodule",
+    "slightly_different_implementation": "module shift_register (\n    input clk,\n    input reset,\n    input serial_in,\n    output [3:0] parallel_out\n);\n    reg [3:0] reg_data;\n    assign parallel_out = reg_data;\n    always @(posedge clk) begin\n        if (reset) begin\n            reg_data <= 4'b0000;\n        end else begin\n            reg_data <= {reg_data[2:0], serial_in};\n        end\n    end\nendmodule",
+    "buggy_implementation": "module shift_register (\n    input clk,\n    input reset,\n    input data_in,\n    output [3:0] data_out\n);\n    reg [3:0] data;\n    assign data_out = data;\n    always @(posedge clk) begin\n        if (reset) begin\n            data <= 2'b00;\n        end else begin\n            data <= {data[1:0], data_in};\n        end\n    end\nendmodule"
+  },
+  {
+    "difficulty": "medium",
+    "generated_instruction": "Design a 4-bit universal shift register with a clock, reset, 2-bit mode control (00=hold, 01=shift right, 10=shift left, 11=parallel load), serial input, parallel input, and 4-bit output. The register should reset to 0.",
+    "accurate_implementation": "module universal_shift_register (\n    input clk,\n    input rst,\n    input [1:0] mode,\n    input ser_in,\n    input [3:0] par_in,\n    output reg [3:0] q\n);\n    always @(posedge clk or posedge rst) begin\n        if (rst) begin\n            q <= 4'b0;\n        end else begin\n            case (mode)\n                2'b00: q <= q;\n                2'b01: q <= {ser_in, q[3:1]};\n                2'b10: q <= {q[2:0], ser_in};\n                2'b11: q <= par_in;\n                default: q <= q;\n            endcase\n        end\n    end\nendmodule\n---\n###",
+    "slightly_different_implementation": "module universal_shift_register (\n    input clk,\n    input rst,\n    input [1:0] mode,\n    input ser_in,\n    input [3:0] par_in,\n    output reg [3:0] q\n);\n    always @(posedge clk) begin\n        if (rst) begin\n            q <= 4'd0;\n        end else begin\n            if (mode == 2'b00) q <= q;\n            else if (mode == 2'b01) q <= {ser_in, q[3:1]};\n            else if (mode == 2'b10) q <= {q[2:0], ser_in};\n            else if (mode == 2'b11) q <= par_in;\n        end\n    end\nendmodule\n---\n###",
+    "buggy_implementation": "module universal_shift_register (\n    input clk,\n    input rst,\n    input [1:0] mode,\n    input ser_in,\n    input [3:0] par_in,\n    output reg [3:0] q\n);\n    always @(posedge clk) begin\n        if (rst) begin\n            q <= 4'b0;\n        end else begin\n            case (mode)\n                2'b00: q <= q;\n                2'b01: q <= {q[2:0], ser_in};\n                2'b10: q <= {ser_in, q[3:1]};\n                2'b11: q <= par_in;\n            endcase\n        end\n    end\nendmodule\n---\n###"
+  },
+  {
+    "difficulty": "medium",
+    "generated_instruction": "\"Design a Verilog module for a 4-bit incrementer that takes a 4-bit input and outputs its value plus one.\"",
+    "accurate_implementation": "module inc4bit (\n    input [3:0] a,\n    output [3:0] b\n);\n    assign b = a + 1'b1;\nendmodule",
+    "slightly_different_implementation": "module inc4bit (\n    input [3:0] a,\n    output reg [3:0] b\n);\n    always @(*) begin\n        b = a + 1;\n    end\nendmodule",
+    "buggy_implementation": "module inc4bit (\n    input [3:0] a,\n    output [3:0] b\n);\n    assign b = a + 1'b0;\nendmodule"
+  },
+  {
+    "difficulty": "medium",
+    "generated_instruction": "\"Design a Verilog module for a 4-bit decrementer that takes a 4-bit input and outputs the input value minus 1.\"",
+    "accurate_implementation": "module decrementer (\n    input [3:0] in,\n    output [3:0] out\n);\n    assign out = in - 1;\nendmodule",
+    "slightly_different_implementation": "module decrementer (\n    input [3:0] in,\n    output reg [3:0] out\n);\n    always @(*) begin\n        out = in - 1;\n    end\nendmodule",
+    "buggy_implementation": "module decrementer (\n    input [3:0] in,\n    output [3:0] out\n);\n    assign out = in + 1;\nendmodule"
+  },
+  {
+    "difficulty": "hard",
+    "generated_instruction": "\"Design a 4-bit ALU with inputs a and b (4-bit each) and op (2-bit), that supports add (00), subtract (01), AND (10), and OR (11) operations. The output should be 4-bit.\"",
+    "accurate_implementation": "module alu_4bit (\n    input [3:0] a, b,\n    input [1:0] op,\n    output reg [3:0] out\n);\n    always @(*) begin\n        case (op)\n            2'b00: out = a + b;\n            2'b01: out = a - b;\n            2'b10: out = a & b;\n            2'b11: out = a | b;\n        endcase\n    end\nendmodule",
+    "slightly_different_implementation": "module alu_4bit (\n    input [3:0] a, b,\n    input [1:0] op,\n    output [3:0] out\n);\n    assign out = (op == 2'b00) ? (a + b) :\n                 (op == 2'b01) ? (a - b) :\n                 (op == 2'b10) ? (a & b) :\n                 (a | b);\nendmodule",
+    "buggy_implementation": "module alu_4bit (\n    input [3:0] a, b,\n    input [1:0] op,\n    output reg [3:0] out\n);\n    always @(*) begin\n        case (op)\n            2'b00: out = a + b;\n            2'b01: out = a & b;\n            2'b10: out = a | b;\n            2'b11: out = a - b;\n        endcase\n    end\nendmodule"
+  },
+  {
+    "difficulty": "hard",
+    "generated_instruction": "Write a Verilog module for a 4-bit multiplier. The inputs are two 4-bit signals, and the output is their 8-bit product.",
+    "accurate_implementation": "module multiplier_4bit (\n    input [3:0] A,\n    input [3:0] B,\n    output [7:0] Product\n);\n    assign Product = A * B;\nendmodule",
+    "slightly_different_implementation": "module multiplier_4bit (\n    input [3:0] A,\n    input [3:0] B,\n    output reg [7:0] Product\n);\n    always @(*) begin\n        Product = A * B;\n    end\nendmodule",
+    "buggy_implementation": "module multiplier_4bit (\n    input [3:0] A,\n    input [3:0] B,\n    output [6:0] Product\n);\n    assign Product = A * B;\nendmodule"
+  },
+  {
+    "difficulty": "hard",
+    "generated_instruction": "\"Design a 4-bit barrel shifter with inputs `data_in[3:0]` and `shift_amount[1:0]`, and output `shifted_data[3:0]`. The shifter should left-shift `data_in` by `shift_amount` bits, filling with zeros. Use a case statement for implementation.\"\n---\nThis instruction is concise, includes all necessary details, and would reliably reproduce the accurate implementation when given to an LLM.",
+    "accurate_implementation": "module barrel_shifter (\n    input [3:0] data_in,\n    input [1:0] shift_amount,\n    output reg [3:0] shifted_data\n);\n    always @(*) begin\n        case (shift_amount)\n            2'b00: shifted_data = data_in;\n            2'b01: shifted_data = {data_in[2:0], 1'b0};\n            2'b10: shifted_data = {data_in[1:0], 2'b0};\n            2'b11: shifted_data = {data_in[0], 3'b0};\n        endcase\n    end\nendmodule",
+    "slightly_different_implementation": "module barrel_shifter (\n    input [3:0] data_in,\n    input [1:0] shift_amount,\n    output [3:0] shifted_data\n);\n    assign shifted_data = data_in << shift_amount;\nendmodule",
+    "buggy_implementation": "module barrel_shifter (\n    input [3:0] data_in,\n    input [1:0] shift_amount,\n    output reg [3:0] shifted_data\n);\n    always @(*) begin\n        case (shift_amount)\n            2'b00: shifted_data = data_in;\n            2'b01: shifted_data = {data_in[2:0], 1'b1};\n            2'b10: shifted_data = {data_in[1:0], 2'b0};\n            2'b11: shifted_data = {data_in[0], 3'b0};\n        endcase\n    end\nendmodule"
+  },
+  {
+    "difficulty": "hard",
+    "generated_instruction": "\"Design a 4-bit sequence detector in Verilog that detects '1011' using a Moore FSM. Include clock and reset inputs, a serial data input, and a detection output.\"",
+    "accurate_implementation": "module seq_detector(\n    input clk, rst,\n    input in,\n    output reg out\n);\n    reg [2:0] state, next_state;\n    parameter S0 = 0, S1 = 1, S2 = 2, S3 = 3;\n    always @(posedge clk or posedge rst) begin\n        if (rst) state <= S0;\n        else state <= next_state;\n    end\n    always @(*) begin\n        case (state)\n            S0: next_state = in ? S1 : S0;\n            S1: next_state = in ? S1 : S2;\n            S2: next_state = in ? S3 : S0;\n            S3: next_state = in ? (out = 1'b1, S1) : S2;\n        endcase\n    end\n    always @(*) out = (state == S3 && in);\nendmodule",
+    "slightly_different_implementation": "module seq_detector(\n    input clk, rst,\n    input in,\n    output reg out\n);\n    reg [1:0] state;\n    parameter WAIT=0, GOT1=1, GOT10=2, GOT101=3;\n    always @(posedge clk or posedge rst) begin\n        if (rst) begin\n            state <= WAIT;\n            out <= 0;\n        end\n        else begin\n            case (state)\n                WAIT: state <= in ? GOT1 : WAIT;\n                GOT1: state <= in ? GOT1 : GOT10;\n                GOT10: state <= in ? GOT101 : WAIT;\n                GOT101: begin\n                    state <= in ? GOT1 : GOT10;\n                    out <= in;\n                end\n            endcase\n        end\n    end\nendmodule",
+    "buggy_implementation": "module seq_detector(\n    input clk, rst,\n    input in,\n    output reg out\n);\n    reg [2:0] state;\n    parameter S0 = 0, S1 = 1, S2 = 2, S3 = 3;\n    always @(posedge clk or posedge rst) begin\n        if (rst) state <= S0;\n        else begin\n            case (state)\n                S0: state <= in ? S1 : S0;\n                S1: state <= in ? S1 : S2;\n                S2: state <= in ? S3 : S0;\n                S3: begin\n                    state <= in ? S1 : S2;\n                    out <= in;\n                end\n            endcase\n        end\n    end\nendmodule"
+  },
+  {
+    "difficulty": "hard",
+    "generated_instruction": "\"Design a 4-bit LFSR with taps at bits 3 and 2, initialized to 0001 on reset. Use positive-edge clock and synchronous reset.\"",
+    "accurate_implementation": "module lfsr4 (\n    input clk,\n    input reset,\n    output reg [3:0] out\n);\n    always @(posedge clk) begin\n        if (reset)\n            out <= 4'b0001;\n        else\n            out <= {out[2:0], out[3] ^ out[2]};\n    end\nendmodule",
+    "slightly_different_implementation": "module lfsr4 (\n    input clk,\n    input reset,\n    output [3:0] out\n);\n    reg [3:0] state;\n    assign out = state;\n    always @(posedge clk) begin\n        if (reset)\n            state <= 4'b1111;\n        else begin\n            state[3] <= state[2];\n            state[2] <= state[1];\n            state[1] <= state[0];\n            state[0] <= state[3] ^ state[2];\n        end\n    end\nendmodule",
+    "buggy_implementation": "module lfsr4 (\n    input clk,\n    input reset,\n    output reg [3:0] out\n);\n    always @(posedge clk) begin\n        if (reset)\n            out <= 4'b1000;\n        else\n            out <= {out[2:0], out[3] ^ out[1]};\n    end\nendmodule"
+  }
+]

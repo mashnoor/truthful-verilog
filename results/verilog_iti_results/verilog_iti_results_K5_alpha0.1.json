@@ -1,0 +1,23 @@
+[
+  {
+    "problem_name": "zero",
+    "original_prompt": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - output zero\n\nThe module should always outputs a LOW.",
+    "original_implementation": "module RefModule (\n  output zero\n);\n\n  assign zero = 1'b0;\n\nendmodule",
+    "without_steering_implementation": "module TopModule (\n    output zero\nassign zero = 0;\nendmodule\nThis is the correct Verilog code for the given specification. The `TopModule` module has an output port named `zero`. Inside the module, the `zero` port is assigned a value of `0`, which means it will always output a LOW signal.",
+    "with_steering_implementation": "module TopModule (\n  output zero\n  assign zero = 0;\nendmodule\nThis is the Verilog code that meets your requirements. The `TopModule` module has an output port named `zero`, and it assigns a value of `0` (LOW) to this port, ensuring that it will always output a LOW signal."
+  },
+  {
+    "problem_name": "m2014_q4i",
+    "original_prompt": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - output out\n\nThe module should always drive 0 (or logic low).",
+    "original_implementation": "module RefModule (\n  output out\n);\n\n  assign out = 1'b0;\n\nendmodule",
+    "without_steering_implementation": "module TopModule(\n    output out\nassign out = 0;\nendmodule\nThis is a simple Verilog module named `TopModule` that has an output port `out`. The module ensures that the output `out` is always driven to 0, which represents a logic low in digital electronics. The `assign` statement is used to assign the value 0 to the output port `out`, ensuring that it remains constant at 0 throughout the operation of the module.",
+    "with_steering_implementation": "module TopModule (\n    output out\nassign out = 0;\nendmodule\nThis code defines a module named `TopModule` with an output port `out`. The `assign` statement ensures that `out` is always driven with the value `0`, which corresponds to logic low in digital electronics. This implementation meets the specified requirements by providing a simple module that outputs a constant low signal."
+  },
+  {
+    "problem_name": "step_one",
+    "original_prompt": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - output one\n\nThe module should always drive 1 (or logic high).",
+    "original_implementation": "module RefModule (\n  output one\n);\n\n  assign one = 1'b1;\n\nendmodule",
+    "without_steering_implementation": "module TopModule (\n    output one\n    assign one = 1;\nendmodule\nThis is a straightforward Verilog module that implements the `TopModule` with an output port named `one`. The `assign` statement ensures that the `one` output is always driven to `1`, which represents a logic high in digital circuits.",
+    "with_steering_implementation": "module TopModule(\n    output one\nassign one = 1;\nendmodule\nThis code defines a module named `TopModule` with an output port named `one`. The `assign` statement ensures that the `one` port is always driven with the value `1`, which corresponds to logic high in digital circuits."
+  }
+]

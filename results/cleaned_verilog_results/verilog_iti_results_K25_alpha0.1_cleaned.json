@@ -1,0 +1,107 @@
+[
+{
+  "problem_name": "zero",
+  "original_prompt": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - output zero\n\nThe module should always outputs a LOW.",
+  "original_implementation": "module RefModule (\n  output zero\n);\n\n  assign zero = 1'b0;\n\nendmodule",
+  "without_steering_implementation": "",
+  "with_steering_implementation": ""
+},
+{
+  "problem_name": "m2014_q4i",
+  "original_prompt": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - output out\n\nThe module should always drive 0 (or logic low).",
+  "original_implementation": "module RefModule (\n  output out\n);\n\n  assign out = 1'b0;\n\nendmodule",
+  "without_steering_implementation": "module TopModule(\n    input wire rst,\n    input wire clk,\n    output reg out\n);\n\nalways @(posedge clk or posedge rst) begin\n    if (rst) begin\n        out <= 0;\n    end else begin\n        out <= 0;\n    end\nend\n\nendmodule",
+  "with_steering_implementation": ""
+},
+{
+  "problem_name": "step_one",
+  "original_prompt": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - output one\n\nThe module should always drive 1 (or logic high).",
+  "original_implementation": "module RefModule (\n  output one\n);\n\n  assign one = 1'b1;\n\nendmodule",
+  "without_steering_implementation": "module TopModule (\n    output reg one\n);\n\nalways @(*) begin\n    one = 1;\nend\n\nendmodule",
+  "with_steering_implementation": ""
+},
+{
+  "problem_name": "vector2",
+  "original_prompt": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  in  (32 bits)\n - output out (32 bits)\n\nThe module should reverse the byte order of a 32-bit vector.",
+  "original_implementation": "module RefModule (\n  input [31:0] in,\n  output [31:0] out\n);\n\n  assign out = {in[7:0], in[15:8], in[23:16], in[31:24]};\n\nendmodule",
+  "without_steering_implementation": "module TopModule (\n    input  [31:0] in,\n    output [31:0] out\n);\n\n    assign out = \n        (in[7:0] << 24) |\n        (in[15:8] << 16) |\n        (in[23:16] << 8) |\n        (in[31:24]);\n\nendmodule",
+  "with_steering_implementation": "module TopModule (\n    input  [31:0] in,\n    output [31:0] out\n);\n    assign out = in[31:0] ^ in[23:16] ^ in[15:8] ^ in[7:0];\nendmodule"
+},
+{
+  "problem_name": "notgate",
+  "original_prompt": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  in\n - output out\n\nThe module should implement a NOT gate.",
+  "original_implementation": "module RefModule (\n  input in,\n  output out\n);\n\n  assign out = ~in;\n\nendmodule",
+  "without_steering_implementation": "module TopModule (\n    input in,\n    output out\n);\n    assign out = ~in;\nendmodule",
+  "with_steering_implementation": "module TopModule (\n    input in,\n    output out\n);\n    assign out = ~in;\nendmodule"
+},
+{
+  "problem_name": "vectorr",
+  "original_prompt": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  in  (8 bits)\n - output out (8 bits)\n\nThe module should reverse the bit ordering of the input port and write\nthe result to the output port.",
+  "original_implementation": "module RefModule (\n  input [7:0] in,\n  output [7:0] out\n);\n\n  assign {out[0],out[1],out[2],out[3],out[4],out[5],out[6],out[7]} = in;\n\nendmodule",
+  "without_steering_implementation": "",
+  "with_steering_implementation": ""
+},
+{
+  "problem_name": "wire",
+  "original_prompt": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  in\n - output out\n\nThe module should behave like a wire.",
+  "original_implementation": "module RefModule (\n  input in,\n  output out\n);\n\n  assign out = in;\n\nendmodule",
+  "without_steering_implementation": "module TopModule (\n    input in,\n    output out\n);\nassign out = in;\nendmodule",
+  "with_steering_implementation": "module TopModule (\n    input in,\n    output out\n    assign out = in;\nendmodule"
+},
+{
+  "problem_name": "m2014_q4h",
+  "original_prompt": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  in\n - output out\n\nThe module should assign the output port to the same value as the input\nport combinationally.",
+  "original_implementation": "module RefModule (\n  input in,\n  output out\n);\n\n  assign out = in;\n\nendmodule",
+  "without_steering_implementation": "module TopModule (\n    input  in,\n    output out\n);\n    assign out = in;\nendmodule",
+  "with_steering_implementation": ""
+},
+{
+  "problem_name": "popcount3",
+  "original_prompt": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  in  (3 bits)\n - output out (2 bits)\n\nThe module should implement a \"population count\" circuit that counts the\nnumber of '1's in the input vector.",
+  "original_implementation": "module RefModule (\n  input [2:0] in,\n  output [1:0] out\n);\n\n  assign out = in[0]+in[1]+in[2];\n\nendmodule",
+  "without_steering_implementation": "module TopModule (\n    input  [2:0] in,\n    output [1:0] out\n);\n    wire [2:0] temp;\n    assign temp = in;\n    reg [2:0] count = 0;\n    always @(temp) begin\n        assign out = count[2:1];\n    end\nendmodule",
+  "with_steering_implementation": ""
+},
+{
+  "problem_name": "mt2015_q4a",
+  "original_prompt": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  x\n - input  y\n - output z\n\nThe module should implement the boolean function z = (x^y) & x.",
+  "original_implementation": "module RefModule (\n  input x,\n  input y,\n  output z\n);\n\n  assign z = (x^y) & x;\n\nendmodule",
+  "without_steering_implementation": "module TopModule (\n    input  x,\n    input  y,\n    output z\n);\n    assign z = (x ^ y) & x;\nendmodule",
+  "with_steering_implementation": "module TopModule (\n    input  x,\n    input  y,\n    output z\n);\n    wire xor_result = x ^ y;\n    assign z = xor_result & x;\nendmodule"
+},
+{
+  "problem_name": "norgate",
+  "original_prompt": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  a\n - input  b\n - output out\n\nThe module should implement a NOR gate.",
+  "original_implementation": "module RefModule (\n  input a,\n  input b,\n  output out\n);\n\n  assign out = ~(a | b);\n\nendmodule",
+  "without_steering_implementation": "module TopModule(\n    input clk,\n    input a,\n    input b,\n    output out\n);\n\n    reg [7:0] delay_counter;\n    always @(posedge clk) begin\n        if (delay_counter < 8) begin\n            delay_counter <= delay_counter + 1;\n        end else begin\n            delay_counter <= 0;\n            out <= ~(a & b);\n        end\n    end\n\nendmodule",
+  "with_steering_implementation": "module TopModule (\n    input a,\n    input b,\n    output out\n);\nassign out = ~(a | b);\nendmodule"
+},
+{
+  "problem_name": "xnorgate",
+  "original_prompt": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  a\n - input  b\n - output out\n\nThe module should implement an XNOR gate.",
+  "original_implementation": "module RefModule (\n  input a,\n  input b,\n  output out\n);\n\n  assign out = ~(a^b);\n\nendmodule",
+  "without_steering_implementation": "module TopModule (\n    input a,\n    input b,\n    output out\n    assign out = ~(a ^ b);\nendmodule",
+  "with_steering_implementation": "module TopModule(\n    input a,\n    input b,\n    output out\n    assign out = ~(a ^ b);\nendmodule"
+},
+{
+  "problem_name": "m2014_q4e",
+  "original_prompt": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  in1\n - input  in2\n - output out\n\nThe module should implement a 2-input NOR gate.",
+  "original_implementation": "module RefModule (\n  input in1,\n  input in2,\n  output logic out\n);\n\n  assign out = ~(in1 | in2);\n\nendmodule",
+  "without_steering_implementation": "module TopModule(\n    input in1,\n    input in2,\n    output out\n    // Implement a 2-input NOR gate\n    assign out = ~in1 & ~in2;\nendmodule",
+  "with_steering_implementation": "module TopModule (\n    input in1,\n    input in2,\n    output out\n    assign out = ~in1 & ~in2;\nendmodule"
+},
+{
+  "problem_name": "andgate",
+  "original_prompt": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  a\n - input  b\n - output out\n\nThe module should implement a 2-input AND gate.",
+  "original_implementation": "module RefModule (\n  input a,\n  input b,\n  output out\n);\n\n  assign out = a & b;\n\nendmodule",
+  "without_steering_implementation": "module TopModule (\n    input a,\n    input b,\n    output out\n    // Implement a 2-input AND gate\n    assign out = a & b;\nendmodule",
+  "with_steering_implementation": "module TopModule (\n    input a,\n    input b,\n    output out\n);\n    assign out = a & b;\nendmodule"
+},
+{
+  "problem_name": "vector1",
+  "original_prompt": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  in     (16 bits)\n - output out_hi ( 8 bits)\n - output out_lo ( 8 bits)\n\nThe module should implement a combinational circuit that splits an input\nhalf-word (16 bits, [15:0] ) into lower [7:0] and upper [15:8] bytes.",
+  "original_implementation": "module RefModule (\n  input [15:0] in,\n  output [7:0] out_hi,\n  output [7:0] out_lo\n);\n\n  assign {out_hi, out_lo} = in;\n\nendmodule",
+  "without_steering_implementation": "",
+  "with_steering_implementation": "module TopModule (\n    input  in     [15:0],\n    output out_hi [7:0],\n    output out_lo [7:0]\n);\n    assign out_lo = in[7:0];\n    assign out_hi = in[15:8];\nendmodule"
+}
+]
